@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  # MongoDB service
+  mongo_db:
+    container_name: db_container
+    image: mongo:latest
+    restart: always
+    ports:
+      - 2717:27017
+    volumes:
+      - mongo_db:/data/db
+
+  # Node API service
+  api:
+    build: .
+    ports:
+      - 5678:5678
+    environment:
+      PORT: 5678
+      DB_LINK: mongodb://mongo_db:27017/reunion
+      TEST_DB_LINK: mongodb://mongo_db:27017/reunion_test
+      JWT_ACCESS_KEY: secretkey
+    depends_on:
+      - mongo_db
+volumes:
+  mongo_db: {}
