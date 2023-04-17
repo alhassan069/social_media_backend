@@ -1,0 +1,32 @@
+type: compose
+services:
+  # MongoDB service
+  mongo_db:
+    image: mongo:latest
+    ports:
+      - 2717:27017
+    volumes:
+      - mongo_db:/data/db
+    name: mongo_db
+    internal_ports: []
+    protocol: tcp
+
+  # Node API service
+  api:
+    build:
+      context: .
+    ports:
+      - 5678:5678
+    environment:
+      PORT: 5678
+      DB_LINK: mongodb://mongo_db:27017/reunion
+      TEST_DB_LINK: mongodb://mongo_db:27017/reunion_test
+      JWT_ACCESS_KEY: secretkey
+    name: api
+    internal_ports: []
+    protocol: http
+    depends_on:
+      - mongo_db
+
+volumes:
+  mongo_db: {}
