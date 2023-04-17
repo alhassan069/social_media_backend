@@ -40,6 +40,10 @@ app.use((req, res, next) => {
 })
 
 // Routes to all the API'S.
+
+app.get('/', (req, res) => {
+    return res.status(200).json({ "Message": "Welcome to social media backend application." })
+})
 app.use('/api', routes);
 
 
